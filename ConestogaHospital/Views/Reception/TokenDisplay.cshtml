@@ -1,0 +1,92 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "TokenDisplay";
+}
+
+<!DOCTYPE html>
+
+<html ng-app="tokenDisplay">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Token Display</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="~/Content/Theme/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONTAWESOME STYLES-->
+    <link href="~/Content/Theme/css/font-awesome.css" rel="stylesheet" />
+    <!--CUSTOM BASIC STYLES-->
+    <link href="~/Content/Theme/css/basic.css" rel="stylesheet" />
+    <!--CUSTOM MAIN STYLES-->
+    <link href="~/Content/Theme/css/custom.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+
+
+    <script src="~/Content/Common/DataTables/vendor/angular/angular.min.js"></script>
+    <script src="~/Content/Common/js/angular-growl.min.js"></script>
+    <link href="~/Content/Common/css/angular-growl.min.css" rel="stylesheet" />
+    <script src="~/Content/Scripts/dirPagination.js"></script>
+
+    <script src="~/Content/Scripts/dirPagination.js"></script>
+    <script src="https://cdn.pubnub.com/pubnub-3.15.1.min.js"></script>
+    <script src="https://cdn.pubnub.com/sdk/pubnub-angular/pubnub-angular-3.2.1.min.js"></script>
+
+    <script src="~/Content/Modules/TokenDisplayModule.js"></script>
+    <script src="~/Content/Controllers/TokenDisplayController.js"></script>
+    <script src="~/Content/Services/TokenDisplayService.js"></script>
+
+
+</head>
+<body ng-cloak style="background-color: #4380b8">
+    <div growl></div>
+    <div ng-controller="TokenDisplayCntrl">
+        <div class="row">
+            <div class="col-lg-12 tokenHeader">
+                Conestoga Hospital
+            </div>
+        </div>
+        <div class="row" style="margin-top:15px;">
+            <div class="col-lg-12 tokenList">
+                <div class="col-lg-6">
+                    <h1 class="text-center">New Tokens</h1>
+                    <div style="border-bottom:1px solid #fff" class="col-lg-12" ng-repeat="newToken in newTokens">
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="text-center">{{newToken.TokenNo}}</p>
+                        </div>
+                        <div class="col-lg-4">
+                            @*<p class="text-right">Room: {{newToken.RoomNo}}</p>*@
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="text-center">Under Diagnosis Tokens</h1>
+                    <div style="border-bottom:1px solid #fff" ng-repeat="token in underDiagnosisTokens" class="col-lg-12 ">
+                        <div class="col-lg-4">
+                            <p class="text-left">{{token.TokenNo}}</p>
+                        </div>
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <p class="text-right">Room: {{token.RoomNo}}</p>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Content/Theme/js/jquery-1.10.2.js"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="~/Content/Theme/js/bootstrap.js"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="~/Content/Theme/js/jquery.metisMenu.js"></script>
+    <!-- CUSTOM SCRIPTS -->
+    <script src="~/Content/Theme/js/custom.js"></script>
+
+
+</body>
+</html>
+
+

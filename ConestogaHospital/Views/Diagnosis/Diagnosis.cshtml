@@ -1,0 +1,271 @@
+﻿@{
+    ViewBag.Title = "Diagnosis";
+}
+
+<!DOCTYPE html>
+
+<html ng-app="diagnosis">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Diagnosis</title>
+
+    <script src="~/Content/Scripts/dirPagination.js"></script>
+    <script src="https://cdn.pubnub.com/pubnub-3.15.1.min.js"></script>
+    <script src="https://cdn.pubnub.com/sdk/pubnub-angular/pubnub-angular-3.2.1.min.js"></script>
+
+    <script src="~/Content/Modules/DiagnosisModule.js"></script>
+    <script src="~/Content/Controllers/DiagnosisController.js"></script>
+    <script src="~/Content/Services/DiagnosisService.js"></script>
+
+
+</head>
+<body ng-cloak>
+    <div growl></div>
+    <div ng-controller="DiagnosisCntrl">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line">Diagnosis</h1>
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-4">
+                    <div class="text-left" ng-show="underDiagnosisToken!=undefined&&underDiagnosisToken!=null">
+                        <p>Patient Name: {{underDiagnosisToken.FName}} {{underDiagnosisToken.LName}}</p>
+                        <p>Patient No: {{underDiagnosisToken.PatientNo}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="text-left" ng-show="underDiagnosisToken!=undefined&&underDiagnosisToken!=null">
+                        <p>Token No: {{underDiagnosisToken.TokenNo}}</p>
+                        <p>Status: {{underDiagnosisToken.TokenStatus}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="text-right">
+                        <button type="button" ng-show="underDiagnosisToken!=undefined&&underDiagnosisToken!=null" title="Announce Token" class="btn btn-success" ng-click="announceToken(underDiagnosisToken.TokenId)">
+                            <i class="fa fa-bullhorn"></i>
+                        </button>
+                        <button type="button" title="Token Queue" class="btn btn-success" data-toggle="modal" data-target="#tokenModal">
+                            <i class="fa fa-list-ol"></i> Token List
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div><br /><br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Patient Allergies
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li ng-repeat="allergy in allergyList">{{allergy.AlergyName}}</li>
+                            </ul>
+                            <div ng-show="allergyList.length==0||allergyList==null">
+                                <p class="text-center"><i class="fa fa-allergies fa-4x"></i></p>
+                                <p class="text-center">Nothing to show</p>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Patient Last Diagnosis <span ng-show="lastDiagnosis.DiagnosisDate!=null">( {{lastDiagnosis.DiagnosisDate}} )</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row" ng-show="lastDiagnosis!=null">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-6" ng-show="lastDiagnosis.Symptoms.length!=0&&lastDiagnosis.Symptoms!=null">
+                                        <h3>Symtoms</h3>
+                                        <ul>
+                                            <li ng-repeat="symtom in lastDiagnosis.Symptoms">{{symtom.SymptomName}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-lg-6" ng-show="lastDiagnosis.Prescriptions.length!=0&&lastDiagnosis.Prescriptions!=null">
+                                        <h3>Prescriptions</h3>
+                                        <ul>
+                                            <li ng-repeat="prescription in lastDiagnosis.Prescriptions">{{prescription.PrescriptionName}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="lastDiagnosis.Symptoms==null&&lastDiagnosis.Prescriptions==null">
+                                <p class="text-center"><i class="fa fa-diagnoses fa-4x"></i></p>
+                                <p class="text-center">Nothing to show</p>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-5">
+                    <div class="panel panel-info" ng-show="underDiagnosisToken!=undefined&&underDiagnosisToken!=null">
+                        <div class="panel-heading">
+                            Symptoms <i class="btn fa fa-plus-square" ng-click="addSymptom()"></i>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-12" style="height:150px;overflow:auto;">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Symptoms</label>
+                                            <span ng-repeat="symptom in Symptoms" class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="col-lg-10">
+                                                        <input type="text" class="form-control" ng-model="symptom.SymptomName" placeholder="Enter Symptom">
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <i class=" btn btn-danger fa fa-trash-alt" title="Delete Symptom" ng-click="removeSymptom(symptom)"></i>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="panel panel-info" ng-show="underDiagnosisToken!=undefined&&underDiagnosisToken!=null">
+                        <div class="panel-heading">
+                            Prescriptions <i class="btn fa fa-plus-square" ng-click="addPrescription()"></i>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-12" style="height:150px;overflow:auto;">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Prescriptions</label>
+                                            <span ng-repeat="prescription in Prescriptions" class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="col-lg-10">
+                                                        <input type="text" class="form-control" ng-model="prescription.PrescriptionName" placeholder="Enter Prescription">
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <i class=" btn btn-danger fa fa-trash-alt" title="Delete Prescription" ng-click="removePrescription(prescription)"></i>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2" ng-show="finalSelectedRoom!=null">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Room to admit
+                        </div>
+                        <div class="panel-body">
+                            <p>Floor : {{finalSelectedRoom.FloorNo}}</p>
+                            <p>Room : {{finalSelectedRoom.RoomNo}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-right">
+                <button class="btn btn-primary" ng-disabled="underDiagnosisToken==undefined||underDiagnosisToken==null" ng-click="fetchRoomNos()">Admit</button>
+                <button class="btn btn-primary" ng-disabled="underDiagnosisToken==undefined||underDiagnosisToken==null" ng-click="saveDiagnosis()">Save</button>
+            </div>
+        </div>
+
+        <!-- Modal for token list -->
+        <div class="modal right fade" id="tokenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4>Date: {{todayDate}}</h4>
+                        <h4 class="modal-title" id="myModalLabel2">Token Queue ({{totalTokens}})</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row" ng-repeat="token in tokens">
+                            <hr />
+                            <div class="col-lg-4">
+                                <p>Patient: {{token.FName}} {{token.LName}}</p>
+                                <p>Patient No: {{token.PatientNo}}</p>
+                            </div>
+                            <div class="col-lg-4">
+                                <p>{{token.GeneratedTimeForDisplay}}</p>
+                                <p>Token No: {{token.TokenNo}}</p>
+                            </div>
+                            <div class="col-lg-4 text-center">
+                                {{token.TokenStatus}}  <span class="text-right"><i class="btn btn-success fa fa-eye" title="Under Diagnosis" ng-click="makeUnderDiagnosis(token.TokenId)"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- modal-content -->
+            </div><!-- modal-dialog -->
+        </div><!-- modal -->
+        <div class="modal fade modal-xl" id="roomsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Select Room</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <ul>
+                                <li style="list-style:none" ng-repeat="floor in floors">
+                                    <h3>Floor {{floor}}</h3>
+                                    <div class="room myTooltip" ng-click="saveRoom(room)" ng-repeat="room in rooms|filter:{FloorNo:floor}">
+                                        <i class="fa fa-bed fa-5x" ng-style="{color:room.color}" ng-show="room.IsAvailable"></i>
+                                        <i class="fas fa-user-injured fa-5x" ng-style="{color:room.color}" ng-show="!room.IsAvailable"></i>
+                                        <p class="text-center">Room : {{room.RoomNo}}</p>
+                                        <div class="tooltiptext" ng-show="!room.IsAvailable">
+                                            <p>Patient: {{room.PatientName}}</p>
+                                            <p>Doctor: {{room.DoctorName}} <br />( {{room.DoctorSpeciality}} )</p>
+                                            <p>AdmitDate: {{room.AdmitDateDisplay}}</p>
+                                        </div>
+                                        <div class="tooltiptext" ng-show="room.IsAvailable">Room is available</div>
+                                    </div>
+                                    <hr />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="clearSelectedRoom()" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="saveSelectedRoom()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: #ECEFF1; z-index: 30001; opacity: .8; filter: alpha(opacity=70); display: none">
+                    <p style="position: absolute; top: 30%; left: 45%; color: #000; font-weight:bold;font-size:18px;text-align:center">
+                        <img src="~/Content/images/8.gif"><br />
+                        please wait...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+

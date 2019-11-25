@@ -1,0 +1,297 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="~/Content/Theme/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONTAWESOME STYLES-->
+    <link href="~/Content/Theme/css/font-awesome.css" rel="stylesheet" />
+    <!--CUSTOM BASIC STYLES-->
+    <link href="~/Content/Theme/css/basic.css" rel="stylesheet" />
+    <!--CUSTOM MAIN STYLES-->
+    <link href="~/Content/Theme/css/custom.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+
+    <link href="~/Content/Theme/fontawesome/css/all.css" rel="stylesheet" />
+    @*<script defer src="~/Content/Theme/fontawesome/js/all.js"></script>*@
+    <link href="~/Content/Theme/fontawesome/css/solid.css" rel="stylesheet" />
+
+    <script src="~/Content/Common/DataTables/vendor/angular/angular.min.js"></script>
+    <script src="~/Content/Common/js/angular-growl.min.js"></script>
+    <link href="~/Content/Common/css/angular-growl.min.css" rel="stylesheet" />
+    <script src="~/Content/Scripts/dirPagination.js"></script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="href="~/Home/HomeScreen"">Conestoga Hospital</a>
+            </div>
+
+            <div class="header-right">
+
+                @*<a href="message-task.html" class="btn btn-info" title="New Message"><b>30 </b><i class="fa fa-envelope-o fa-2x"></i></a>
+                    <a href="message-task.html" class="btn btn-primary" title="New Task"><b>40 </b><i class="fa fa-bars fa-2x"></i></a>*@
+                <a href="~/Home/Logout" class="btn btn-danger" title="Logout">Log out</a>
+
+            </div>
+        </nav>
+        <!-- /. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <div class="user-img-div">
+                            <img src=@Session["ProfilePic"].ToString() class="img-thumbnail" />
+
+                            <div class="inner-text">
+                                @Session["Name"].ToString()
+                                <br />
+                                <small>@Session["Role"].ToString()</small>
+                            </div>
+                        </div>
+
+                    </li>
+
+                    <li>
+                        <a class="" href="~/Home/HomeScreen"><i class="fa fa-home "></i>Home</a>
+                    </li>
+
+                    <li>
+                        @{
+
+                            if (Session["Role"].ToString() == "Pharmacy")
+                            {
+                                <a class="" href="~/Pharmacy/Prescriptions"><i class="fa fa-prescription "></i>Prescriptions</a>
+                            }
+                        }
+
+                    </li>
+
+                    <li>
+                        @{
+
+                            if (Session["Role"].ToString() == "Admin")
+                            {
+                                <a class="" href="~/Admin/UserRegister"><i class="fa fa-user "></i>User Register</a>
+                            }
+                        }
+
+                    </li>
+
+                    <li>
+                        @{
+
+                            if (Session["Role"].ToString() == "Doctor")
+                            {
+                                <a class="" href="~/Diagnosis/Diagnosis"><i class="fa fa-stethoscope"></i>Diagnosis</a>
+                            }
+                        }
+
+                    </li>
+                    <li>
+                        @{
+
+                            if (Session["Role"].ToString() == "Doctor")
+                            {
+                                <a class="" href="~/Doctor/AppointmentSchedule"><i class="fa fa-calendar-alt"></i>Appointment Schedule</a>
+                            }
+                        }
+
+                    </li>
+
+                    <li>
+                        @{
+
+                            if (Session["Role"].ToString() == "Receptionist")
+                            {
+                                <a class="" href="~/Reception/TokenDisplay" target="_blank"><i class="fa fa-tablet"></i>Token Display</a>
+                            }
+                        }
+
+                    </li>
+
+                    <li>
+                        @{
+
+                            if (Session["Role"].ToString() == "Receptionist")
+                            {
+                                <a class="" href="~/Reception/GenerateTokenNo"><i class="fa fa-plus-square"></i>Token Generate</a>
+                            }
+                        }
+
+                    </li>
+                    <li>
+                        @{
+
+                            if (Session["Role"].ToString() == "Receptionist")
+                            {
+                                <a class="" href="~/Reception/TokenList"><i class="fa fa-list-alt"></i>Token List</a>
+                            }
+                        }
+
+                    </li>
+                    <li>
+                        @{
+
+                            if (Session["Role"].ToString() == "Receptionist")
+                            {
+                                <a class="" href="~/Reception/AdmitPatientList"><i class="fa fa-list"></i>Admit Patient List</a>
+                            }
+                        }
+
+                    </li>
+                    @*<li>
+            <a href="#"><i class="fa fa-desktop "></i>UI Elements <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+                <li>
+                    <a href="panel-tabs.html"><i class="fa fa-toggle-on"></i>Tabs & Panels</a>
+                </li>
+                <li>
+                    <a href="notification.html"><i class="fa fa-bell "></i>Notifications</a>
+                </li>
+                <li>
+                    <a href="progress.html"><i class="fa fa-circle-o "></i>Progressbars</a>
+                </li>
+                <li>
+                    <a href="buttons.html"><i class="fa fa-code "></i>Buttons</a>
+                </li>
+                <li>
+                    <a href="icons.html"><i class="fa fa-bug "></i>Icons</a>
+                </li>
+                <li>
+                    <a href="wizard.html"><i class="fa fa-bug "></i>Wizard</a>
+                </li>
+                <li>
+                    <a href="typography.html"><i class="fa fa-edit "></i>Typography</a>
+                </li>
+                <li>
+                    <a href="grid.html"><i class="fa fa-eyedropper "></i>Grid</a>
+                </li>
+
+
+            </ul>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-yelp "></i>Extra Pages <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+                <li>
+                    <a href="invoice.html"><i class="fa fa-coffee"></i>Invoice</a>
+                </li>
+                <li>
+                    <a href="pricing.html"><i class="fa fa-flash "></i>Pricing</a>
+                </li>
+                <li>
+                    <a href="component.html"><i class="fa fa-key "></i>Components</a>
+                </li>
+                <li>
+                    <a href="social.html"><i class="fa fa-send "></i>Social</a>
+                </li>
+
+                <li>
+                    <a href="message-task.html"><i class="fa fa-recycle "></i>Messages & Tasks</a>
+                </li>
+
+
+            </ul>
+        </li>
+        <li>
+            <a href="table.html"><i class="fa fa-flash "></i>Data Tables </a>
+
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-bicycle "></i>Forms <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+
+                <li>
+                    <a href="form.html"><i class="fa fa-desktop "></i>Basic </a>
+                </li>
+                <li>
+                    <a href="form-advance.html"><i class="fa fa-code "></i>Advance</a>
+                </li>
+
+
+            </ul>
+        </li>
+        <li>
+            <a href="gallery.html"><i class="fa fa-anchor "></i>Gallery</a>
+        </li>
+        <li>
+            <a href="error.html"><i class="fa fa-bug "></i>Error Page</a>
+        </li>
+        <li>
+            <a href="login.html"><i class="fa fa-sign-in "></i>Login Page</a>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-sitemap "></i>Multilevel Link <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+                <li>
+                    <a href="#"><i class="fa fa-bicycle "></i>Second Level Link</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-flask "></i>Second Level Link</a>
+                </li>
+                <li>
+                    <a href="#">Second Level Link<span class="fa arrow"></span></a>
+                    <ul class="nav nav-third-level">
+                        <li>
+                            <a href="#"><i class="fa fa-plus "></i>Third Level Link</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-comments-o "></i>Third Level Link</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="blank.html"><i class="fa fa-square-o "></i>Blank Page</a>
+        </li>*@
+                </ul>
+
+            </div>
+
+        </nav>
+
+        <div id="page-wrapper">
+            <div id="page-inner">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <div id="footer-sec">
+        &copy; 2019 Conestoga Hospital
+    </div>
+    <!-- /. FOOTER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+    <script src="~/Content/Theme/js/jquery-1.10.2.js"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="~/Content/Theme/js/bootstrap.js"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="~/Content/Theme/js/jquery.metisMenu.js"></script>
+    <!-- CUSTOM SCRIPTS -->
+    <script src="~/Content/Theme/js/custom.js"></script>
+
+
+
+</body>
+</html>

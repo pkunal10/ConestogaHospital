@@ -1,0 +1,234 @@
+﻿
+@{
+    ViewBag.Title = "GenerateTokenNo";
+}
+
+<!DOCTYPE html>
+
+<html ng-app="tokenGenerate">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Token Generate</title>
+
+    <script src="~/Content/Scripts/dirPagination.js"></script>
+
+    <script src="~/Content/Modules/TokenGenerateModule.js"></script>
+    <script src="~/Content/Controllers/TokenGenerateController.js"></script>
+    <script src="~/Content/Services/TokenGenerateService.js"></script>
+
+
+</head>
+<body ng-cloak>
+    <div growl></div>
+    <div ng-controller="TokenGenerateCntrl">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line">Generate Token</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="main-box mb-red">
+                    <a href="#" ng-click="newPatientClick()">
+                        <i class="fa fa-plus-square fa-5x"></i>
+                        <h5>New Patient</h5>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="main-box mb-dull">
+                    <a href="#" ng-click="openGenerateTokenModal()">
+                        <i class="fa fa-exchange-alt fa-5x"></i>
+                        <h5>Old Patient</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div ng-show="isNewPatient">
+            <div class="row">
+                <div growl></div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Patient No</label>
+                        <input type="text" class="form-control" ng-disabled="true" ng-model="newPatientPatientNo">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">First Name</label>
+                        <input type="text" class="form-control" ng-model="FName" placeholder="Enter First Name">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Last Name</label>
+                        <input type="text" class="form-control" ng-model="LName" placeholder="Enter Last Name">
+                    </div>
+                </div>
+            </div><br />
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Mobile No</label>
+                            <input type="text" class="form-control" ng-model="MobileNo" placeholder="Enter Mobile No">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email Id</label>
+                            <input type="text" class="form-control" ng-model="EmailId" placeholder="Enter Email Id">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">DOB</label>
+                            <input type="date" value="21/08/1995" class="form-control" ng-model="DOB" id="datepicker" placeholder="Enter DOB">
+                        </div>
+                    </div>
+                </div>
+            </div><br />
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Address
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Line 1</label>
+                                    <input type="text" class="form-control" ng-model="Line1" placeholder="Enter Line 1">
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">City</label>
+                                    <input type="text" class="form-control" ng-model="City" placeholder="Enter City">
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Province</label>
+                                    <input type="text" class="form-control" ng-model="Province" placeholder="Enter Province">
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="exampleInputEmail1">Zip Code</label>
+                                <input type="text" class="form-control" ng-model="ZipCode" placeholder="Enter Zip Code">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br />
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Allergies <i class="btn fa fa-plus-square" ng-click="addAllergy()"></i>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-4" style="height:150px;overflow:auto;">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Allergies</label>
+                                    <span ng-repeat="allergy in Alergies" class="row">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" ng-model="allergy.AlergyName" placeholder="Enter Allergy">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <i class=" btn btn-danger fa fa-trash" ng-click="removeAllergy(allergy)"></i>
+                                            </div>
+                                        </div>
+
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 text-center">
+                                <i class="fa fa-stethoscope fa-5x"></i>
+                                <h5>Allergies</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <button class="btn btn-success" ng-click="patientRegister()">Register</button>
+                <button class="btn btn-primary" ng-click="clearNewPatient()">Clear</button>
+            </div>
+        </div>
+
+
+
+        <!-- Modal for token generate -->
+
+        <div class="modal fade modal-xl" id="generateTokenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Generate Token No</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Patient No</label>
+                                    <input type="text" class="form-control" ng-keydown="complete(PatientNo)" ng-model="PatientNo" placeholder="Enter Patient No">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" ng-repeat="patientNoData in filterPatientNo" ng-click="fillTextbox(patientNoData)">{{patientNoData}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Speciality</label>
+                                    <select class="dropdown-header form-control" ng-model="SpecialityId" ng-options="c.Value as c.Text for c in specialityList" ng-change="specialityChange()">
+                                        <option value="">-- Select --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Selet Doctor</label>
+                                    <select class="dropdown-header form-control" ng-model="DoctorId" ng-options="c.Value as c.Text for c in doctorList">
+                                        <option value="">-- Select --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <h3 ng-show="DoctorId!=''&&DoctorId!=undefined">Token No: {{tokenNo}}</h3>
+                            </div>
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-4"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="clear()" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="saveTokenNo()">Generate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: #ECEFF1; z-index: 30001; opacity: .8; filter: alpha(opacity=70); display: none">
+                    <p style="position: absolute; top: 30%; left: 45%; color: #000; font-weight:bold;font-size:18px;text-align:center">
+                        <img src="~/Content/images/8.gif"><br />
+                        please wait...
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+</html>
+
+
+
+

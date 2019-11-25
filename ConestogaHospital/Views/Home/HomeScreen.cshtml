@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "HomeScreen";
+}
+
+
+<!DOCTYPE html>
+
+<html ng-app="home">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Patient Id Proofs</title>
+
+    <script src="~/Content/Scripts/dirPagination.js"></script>
+
+    <script src="~/Content/Modules/HomeScreenModule.js"></script>
+    <script src="~/Content/Controllers/HomeScreenController.js"></script>
+    <script src="~/Content/Services/HomeScreenService.js"></script>
+
+</head>
+<body ng-cloak>
+    <div ng-controller="HomeScreenCntrl">
+        <h1 class="text-center">Welcome to Conestoga Hospital</h1><br />
+        <div class="row">
+            <div growl></div>
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4 text-center">
+                <img src="{{userImage}}" class="img-thumbnail" height="250px" width="250px" />
+                <h2>{{userName}}</h2>
+                <h4>{{userRole}} <span ng-show="speciality!=''">( {{speciality}} )</span></h4>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>
+
+</body>
+</html>
